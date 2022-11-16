@@ -104,7 +104,7 @@ public class demo extends Parent {
 	public void TS01ReadCSVData() {
 		try {
 			FileReader fr = new FileReader("data/DocumentReversal_Input.csv");
-			//skip header row
+			// skip header row
 			CSVReader cr = new CSVReaderBuilder(fr).withSkipLines(1).build();
 
 			String[] nextLine;
