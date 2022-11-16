@@ -1,0 +1,27 @@
+{
+	"zz_drfb_no": "",
+	"crdate": "/Date(1661904000000)/",
+	"ernam": "LRTEST58",
+	"bukrs": "7040",
+	"gjahr": "2021",
+	"monat": "00",
+	"budat": "/Date(1638835200000)/",
+	"zz_comment": "Automation",
+	"Action": "SUBM",
+	"to_Items": [
+		{
+			"zz_drfb_no": "",
+			"zz_drfb_item": "000001",
+			"belnr": "1900000273",
+			"bukrs": "7040",
+			"gjahr": "2021",
+			"tcode": "FB08",
+			"rev_cat": "Cash Clearing Reversal",
+			"stgrd": "02",
+			"res_rev": "X",
+			"augbl": "",
+			"auggj": "0000",
+			"augbk": ""
+		}
+	]
+}
