@@ -1,0 +1,26 @@
+{
+    "zz_drch_no": "",
+    "zz_comment": "Test",
+    "budat": "/Date(1669715366791)/",
+    "to_Items": [
+        {
+            "zz_drch_no": "",
+            "zz_drch_item": "",
+            "zbukr": "5050",
+            "hbkid": "USD04",
+            "hktid": "USD04",
+            "chect": "01241",
+            "vblnr": "2000000009",
+            "gjahr": "2022",
+            "rwbtr": "-10.98,
+            "waers": "USD",
+            "monat": "11",
+            "stgrd": "02",
+            "voidr": "10",
+            "zaldt": "2022-11-28T00:00:00",
+            "znme1": "Fisher Scientific 114512",
+            "message": ""
+        }
+    ],
+    "Action": "SUBM"
+}

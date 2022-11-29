@@ -7,9 +7,9 @@
 	</listeners>
 	<test name="Fiori Regression Suite" parallel="methods">
 		<classes>
-			<class name="com.lexmark.DocumentReversalApprove">
+			<class name="com.lexmark.DocumentReversalApprovalFCH8">
 				<methods>
-					<include name="DocumentReversalApproveFB08" />
+					<include name="DocumentReversalApproveFCH8" />
 				</methods>
 			</class>
 		</classes>
