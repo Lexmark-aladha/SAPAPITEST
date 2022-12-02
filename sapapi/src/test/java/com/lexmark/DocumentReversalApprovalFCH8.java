@@ -4,7 +4,7 @@
  *
  * @date 11/23/2022
  * 
- * @description	Document Reversal Approve - FCH8
+ * @description	Document Reversal Approve - FCH8 DEV
  */
 package com.lexmark;
 
@@ -107,8 +107,9 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 			writerOutput = new FileWriter("output/DocumentReversalApprovalFCH8.csv", false);
 			writer = new CSVWriter(writerOutput);
 			Date date = new Date();
+		
 
-			String payload = "{\"zz_drch_no\":\"\",\"zz_comment\":\"Test\",\"budat\":\"/Date(1669715366791)/\",\"to_Items\":[{\"zz_drch_no\":\"\",\"zz_drch_item\":\"\",\"zbukr\":\""
+			String payload = "{\"zz_drch_no\":\"\",\"zz_comment\":\"Test\",\"budat\":\"/Date(" + date.getTime() + ")/\",\"to_Items\":[{\"zz_drch_no\":\"\",\"zz_drch_item\":\"\",\"zbukr\":\""
 					+ input.getProperty("FCH8DocumentReversal.CompanyCode") + "\",\"hbkid\":\""
 					+ input.getProperty("FCH8DocumentReversal.HouseBank") + "\",\"hktid\":\""
 					+ input.getProperty("FCH8DocumentReversal.AccountNo") + "\",\"chect\":\""
@@ -131,13 +132,18 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 					.header("Accept", "application/json").header("Cookie", Cookies)
 					.header("x-csrf-token", x_csrf_token1).header("Content-Type", "application/json").body(payload)
 					.when().post("/ZGCDS_C_DocRevCH_H").then().statusCode(201).statusLine("HTTP/1.1 201 Created")
+					.log().all()
 					.extract().response();
 
 			DocRevReqFCH8 = response.jsonPath().get("d.zz_drch_no");
+			System.out.println("Doc "+DocRevReqFCH8);
 
-			outputData = new String[] { "Document Reversal Approve - FCH8", "Failed",
-					"Document Reversal Request FCH8: " + DocRevReqFCH8 };
+			outputData = new String[] {"Document Reversal Approve -FCH8", "Failed",
+					"Document Reversal Request: " + DocRevReqFCH8 };
+			
+			
 			writer.writeNext(outputData, false);
+			
 
 			Reporter.log("Document Reversal Request Created FCH8: " + response.jsonPath().get("d.zz_drch_no"));
 			System.err.println("Document Reversal Request Created FCH8: " + response.jsonPath().get("d.zz_drch_no"));
