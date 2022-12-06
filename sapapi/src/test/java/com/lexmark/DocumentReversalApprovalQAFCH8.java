@@ -120,10 +120,10 @@ public class DocumentReversalApprovalQAFCH8 {
 					+ input.getProperty("FCH8DocumentReversalQA.AccountNo") + "\",\r\n" + "            \"chect\": \""
 					+ input.getProperty("FCH8DocumentReversalQA.CheckNo") + "\",\r\n" + "            \"vblnr\": \""
 					+ input.getProperty("FCH8DocumentReversalQA.PaymentDoc") + "\",\r\n"
-					+ "            \"gjahr\": \"2022\",\r\n" + "            \"rwbtr\": \"-405.00\",\r\n"
+					+ "            \"gjahr\": \"2022\",\r\n" + "            \"rwbtr\": \""+ input.getProperty("FCH8DocumentReversalQA.Amount") +"\",\r\n"
 					+ "            \"waers\": \"USD\",\r\n" + "            \"monat\": \"12\",\r\n"
 					+ "            \"stgrd\": \"02\",\r\n" + "            \"voidr\": \"10\",\r\n"
-					+ "            \"zaldt\": \"2022-07-22T00:00:00\",\r\n" + "            \"znme1\": \""
+					+ "            \"zaldt\": \"2022-07-20T00:00:00\",\r\n" + "            \"znme1\": \""
 					+ input.getProperty("FCH8DocumentReversalQA.PayeeName") + "\",\r\n"
 					+ "            \"message\": \"\"\r\n" + "        }\r\n" + "    ],\r\n"
 					+ "    \"Action\": \"SUBM\"\r\n" + "}";
