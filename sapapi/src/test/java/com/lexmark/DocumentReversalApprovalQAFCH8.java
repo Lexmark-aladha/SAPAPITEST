@@ -70,7 +70,7 @@ public class DocumentReversalApprovalQAFCH8 {
 		TS02CreateDocumentReversalRequestQAFCH8();
 		TS03GetCsrfTokenWiIdAndCookieDataForApproverQAFCH8();
 		TS04ApproveDocumentReversalRequestQAFCH8();
-
+		TS05VerifyApprovalQAFCH8();
 	}
 
 	@Test
@@ -107,8 +107,6 @@ public class DocumentReversalApprovalQAFCH8 {
 			writerOutput = new FileWriter("output/DocumentReversalApprovalFCH8QA.csv", false);
 			writer = new CSVWriter(writerOutput);
 
-			System.out.println("x_csrf_token2  in post   " + x_csrf_token2);
-			System.out.println("Cookies in Post    " + Cookies);
 			Date date = new Date();
 
 			String payload1 = "{\r\n" + "    \"zz_drch_no\": \"\",\r\n" + "    \"zz_comment\": \"Test\",\r\n"
@@ -123,7 +121,7 @@ public class DocumentReversalApprovalQAFCH8 {
 					+ "            \"gjahr\": \"2022\",\r\n" + "            \"rwbtr\": \""+ input.getProperty("FCH8DocumentReversalQA.Amount") +"\",\r\n"
 					+ "            \"waers\": \"USD\",\r\n" + "            \"monat\": \"12\",\r\n"
 					+ "            \"stgrd\": \"02\",\r\n" + "            \"voidr\": \"10\",\r\n"
-					+ "            \"zaldt\": \"2022-07-20T00:00:00\",\r\n" + "            \"znme1\": \""
+					+ "            \"zaldt\": \"2022-03-08T00:00:00\",\r\n" + "            \"znme1\": \""
 					+ input.getProperty("FCH8DocumentReversalQA.PayeeName") + "\",\r\n"
 					+ "            \"message\": \"\"\r\n" + "        }\r\n" + "    ],\r\n"
 					+ "    \"Action\": \"SUBM\"\r\n" + "}";
@@ -232,4 +230,30 @@ public class DocumentReversalApprovalQAFCH8 {
 		}
 	}
 
+	@Test
+	//(dependsOnMethods = { "TS04ApproveDocumentReversalRequestQAFCH8" })
+	public void TS05VerifyApprovalQAFCH8() {
+		
+				
+		try {
+
+			readerInput = new FileReader("data/InputData.properties");
+			input.load(readerInput);
+
+			Response response = RestAssured.given()
+					.baseUri("https://tsapmobile.lexmark.com/sap/opu/odata/sap/ZGF_DOCREVCH_CREATE_SRV")
+					.relaxedHTTPSValidation().auth().preemptive()
+					.basic(input.getProperty("FCH8DocumentReversalQA.RequestorUser"),
+							input.getProperty("FCH8DocumentReversalQA.RequestorPassword"))
+					//.header("x-csrf-token", "Fetch")
+					.queryParam("$format", "json").when().get("/ZGCDS_C_DocRevCH_H('"+ DocRevReqFCH8QA +"')/StatusDesc")
+					.then().statusCode(200).statusLine("HTTP/1.1 200 OK")
+					.log().all().extract().response();
+			
+			Assert.assertTrue(response.jsonPath().get("d.StatusDesc.Approved"));
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
