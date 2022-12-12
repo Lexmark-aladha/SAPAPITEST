@@ -61,18 +61,15 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 
 	@Test
 	public void DocumentReversalApproveFCH8() {
-
 		TS01GetCsrfTokenAndCookieDataForRequestorFCH8();
 		TS02CreateDocumentReversalRequestFCH8();
 		TS03GetCsrfTokenWiIdAndCookieDataForApproverFCH8();
 		// TS04ApproveDocumentReversalRequestFCH8();
-
 	}
 
 	@Test
 	public void TS01GetCsrfTokenAndCookieDataForRequestorFCH8() {
 		try {
-
 			readerInput = new FileReader("data/InputData.properties");
 			input.load(readerInput);
 
@@ -82,23 +79,20 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 					.basic(input.getProperty("FCH8DocumentReversal.RequestorUser"),
 							input.getProperty("FCH8DocumentReversal.RequestorPassword"))
 					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when().get("/ZGCDS_C_DocRevCH_H")
-					.then().statusCode(200).statusLine("HTTP/1.1 200 OK").log().all().extract().response();
+					.then().statusCode(200).statusLine("HTTP/1.1 200 OK").extract().response();
 
 			x_csrf_token1 = response.getHeader("x-csrf-token");
 
 			Cookies = "SAP_SESSIONID_MGD_750=" + response.getCookie("SAP_SESSIONID_MGD_750") + ";sap-usercontext="
 					+ response.getCookie("sap-usercontext");
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Test(dependsOnMethods = { "TS01GetCsrfTokenAndCookieDataForRequestorFCH8" })
 	public void TS02CreateDocumentReversalRequestFCH8() {
 		try {
-
 			/*
 			 * byte[] b = Files.readAllBytes(Paths.get("data/payload1.json")); String
 			 * payload1 = new String(b);
@@ -107,9 +101,9 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 			writerOutput = new FileWriter("output/DocumentReversalApprovalFCH8.csv", false);
 			writer = new CSVWriter(writerOutput);
 			Date date = new Date();
-		
 
-			String payload = "{\"zz_drch_no\":\"\",\"zz_comment\":\"Test\",\"budat\":\"/Date(" + date.getTime() + ")/\",\"to_Items\":[{\"zz_drch_no\":\"\",\"zz_drch_item\":\"\",\"zbukr\":\""
+			String payload = "{\"zz_drch_no\":\"\",\"zz_comment\":\"Test\",\"budat\":\"/Date(" + date.getTime()
+					+ ")/\",\"to_Items\":[{\"zz_drch_no\":\"\",\"zz_drch_item\":\"\",\"zbukr\":\""
 					+ input.getProperty("FCH8DocumentReversal.CompanyCode") + "\",\"hbkid\":\""
 					+ input.getProperty("FCH8DocumentReversal.HouseBank") + "\",\"hktid\":\""
 					+ input.getProperty("FCH8DocumentReversal.AccountNo") + "\",\"chect\":\""
@@ -132,24 +126,20 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 					.header("Accept", "application/json").header("Cookie", Cookies)
 					.header("x-csrf-token", x_csrf_token1).header("Content-Type", "application/json").body(payload)
 					.when().post("/ZGCDS_C_DocRevCH_H").then().statusCode(201).statusLine("HTTP/1.1 201 Created")
-					.log().all()
 					.extract().response();
 
 			DocRevReqFCH8 = response.jsonPath().get("d.zz_drch_no");
-			System.out.println("Doc "+DocRevReqFCH8);
+			System.out.println("Doc " + DocRevReqFCH8);
 
-			outputData = new String[] {"Document Reversal Approve -FCH8", "Failed",
+			outputData = new String[] { "Document Reversal Approve -FCH8", "Failed",
 					"Document Reversal Request: " + DocRevReqFCH8 };
-			
-			
+
 			writer.writeNext(outputData, false);
-			
 
 			Reporter.log("Document Reversal Request Created FCH8: " + response.jsonPath().get("d.zz_drch_no"));
 			System.err.println("Document Reversal Request Created FCH8: " + response.jsonPath().get("d.zz_drch_no"));
 
 			writer.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -164,7 +154,7 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 					.basic(input.getProperty("FCH8DocumentReversal.ApproverUser"),
 							input.getProperty("FCH8DocumentReversal.ApproverPassword"))
 					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when().get("/ZG_C_DRCH_HEAD").then()
-					.statusCode(200).statusLine("HTTP/1.1 200 OK").log().all().extract().response();
+					.statusCode(200).statusLine("HTTP/1.1 200 OK").extract().response();
 
 			x_csrf_token1 = response.getHeader("x-csrf-token");
 			Cookies = "SAP_SESSIONID_MGD_750=" + response.getCookie("SAP_SESSIONID_MGD_750") + ";sap-usercontext="
@@ -178,7 +168,6 @@ public class DocumentReversalApprovalFCH8 extends Parent {
 					break;
 				}
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

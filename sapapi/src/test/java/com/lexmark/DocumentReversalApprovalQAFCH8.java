@@ -86,7 +86,7 @@ public class DocumentReversalApprovalQAFCH8 {
 					.basic(input.getProperty("FCH8DocumentReversalQA.RequestorUser"),
 							input.getProperty("FCH8DocumentReversalQA.RequestorPassword"))
 					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when().get("/ZGCDS_C_DocRevCH_H")
-					.then().statusCode(200).statusLine("HTTP/1.1 200 OK").log().all().extract().response();
+					.then().statusCode(200).statusLine("HTTP/1.1 200 OK").extract().response();
 
 			x_csrf_token2 = response.getHeader("x-csrf-token");
 
@@ -154,8 +154,7 @@ public class DocumentReversalApprovalQAFCH8 {
 							input.getProperty("FCH8DocumentReversalQA.RequestorPassword"))
 					.header("Accept", "application/json").header("Cookie", Cookies)
 					.header("Content-Type", "application/json").header("x-csrf-token", x_csrf_token2).body(payload1)
-					.when().post("/ZGCDS_C_DocRevCH_H").then().statusCode(201).statusLine("HTTP/1.1 201 Created").log()
-					.all().extract().response();
+					.when().post("/ZGCDS_C_DocRevCH_H").then().statusCode(201).statusLine("HTTP/1.1 201 Created").extract().response();
 
 			DocRevReqFCH8QA = response.jsonPath().get("d.zz_drch_no");
 			outputData = new String[] { "Document Reversal Approve - FCH8", "Failed",
@@ -181,7 +180,7 @@ public class DocumentReversalApprovalQAFCH8 {
 							input.getProperty("FCH8DocumentReversalQA.ApproverPassword"))
 					.header("Content-Type", "application/json").header("x-csrf-token", "Fetch")
 					.queryParam("$format", "json").when().get("/ZG_C_DRCH_HEAD").then().statusCode(200)
-					.statusLine("HTTP/1.1 200 OK").log().all().extract().response();
+					.statusLine("HTTP/1.1 200 OK").extract().response();
 
 			x_csrf_token2 = response.getHeader("x-csrf-token");
 
@@ -219,7 +218,7 @@ public class DocumentReversalApprovalQAFCH8 {
 					// .queryParam("ApproverComment", "'Test API Approve'")
 					// .queryParam("WiId", "'" + WiId + "'")
 					.queryParam("zz_drch_no", "'" + DocRevReqFCH8QA + "'").when().post("/ZG_C_DRCH_HEADAction_approve")
-					.then().statusCode(200).statusLine("HTTP/1.1 200 OK").log().all().extract().response();
+					.then().statusCode(200).statusLine("HTTP/1.1 200 OK").extract().response();
 			// Assert.assertTrue(response.jsonPath().get("d.ApproveDRFBRequest.Success"));
 			outputData = new String[] { "Document Reversal Approve - FCH8", "Passed",
 					"Document Reversal Request: " + DocRevReqFCH8QA };
@@ -232,11 +231,8 @@ public class DocumentReversalApprovalQAFCH8 {
 
 	@Test
 	//(dependsOnMethods = { "TS04ApproveDocumentReversalRequestQAFCH8" })
-	public void TS05VerifyApprovalQAFCH8() {
-		
-				
+	public void TS05VerifyApprovalQAFCH8() {				
 		try {
-
 			readerInput = new FileReader("data/InputData.properties");
 			input.load(readerInput);
 
@@ -248,10 +244,8 @@ public class DocumentReversalApprovalQAFCH8 {
 					//.header("x-csrf-token", "Fetch")
 					.queryParam("$format", "json").when().get("/ZGCDS_C_DocRevCH_H('"+ DocRevReqFCH8QA +"')/StatusDesc")
 					.then().statusCode(200).statusLine("HTTP/1.1 200 OK")
-					.log().all().extract().response();
-			
+					.extract().response();			
 			Assert.assertTrue(response.jsonPath().get("d.StatusDesc.Approved"));
-
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
