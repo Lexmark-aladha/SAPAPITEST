@@ -64,17 +64,17 @@ public class BillingDocumentReversalApprovalVF11 {
 	@Test
 	public void BillingDocumentReversalApproveVF11() {
 
-		 TS01GetCsrfTokenAndCookieDataForRequestorVF11();
-		 
-	     TS02CreateBillingDocumentReversalRequestVF11();
+		TS01GetCsrfTokenAndCookieDataForRequestorVF11();
 
-		 TS03GetCsrfTokenWiIdAndCookieDataForApproverVF11();
+		TS02CreateBillingDocumentReversalRequestVF11();
 
-		 TS04ApproveDocumentReversalRequestVF11();
+		TS03GetCsrfTokenWiIdAndCookieDataForApproverVF11();
 
-	     TS05VerifyApprovalVF11();
+		TS04ApproveDocumentReversalRequestVF11();
 
-	     TS06WatcherVF11();
+		TS05VerifyApprovalVF11();
+
+		TS06WatcherVF11();
 
 	}
 
@@ -92,8 +92,7 @@ public class BillingDocumentReversalApprovalVF11 {
 					.basic(input.getProperty("VF11BillingDocumentReversalQA.RequestorUser"),
 							input.getProperty("VF11BillingDocumentReversalQA.RequestorPassword"))
 					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when().get("/ZG_BILCNC_HEAD_CREATE")
-					.then().statusCode(200).statusLine("HTTP/1.1 200 OK")
-					.extract().response();
+					.then().statusCode(200).statusLine("HTTP/1.1 200 OK").extract().response();
 
 			x_csrf_token3 = response.getHeader("x-csrf-token");
 
@@ -102,7 +101,6 @@ public class BillingDocumentReversalApprovalVF11 {
 			Cookies = "SAP_SESSIONID_MGQ_750=" + response.getCookie("SAP_SESSIONID_MGQ_750") + ";sap-usercontext="
 					+ response.getCookie("sap-usercontext");
 
-
 			System.out.println(" Cookies " + Cookies);
 
 		} catch (Exception e) {
@@ -110,7 +108,8 @@ public class BillingDocumentReversalApprovalVF11 {
 		}
 
 	}
-	@Test(dependsOnMethods = { "TS01GetCsrfTokenAndCookieDataForRequestorVF11" })		
+
+	@Test(dependsOnMethods = { "TS01GetCsrfTokenAndCookieDataForRequestorVF11" })
 	public void TS02CreateBillingDocumentReversalRequestVF11() {
 		try {
 			// byte[] b = Files.readAllBytes(Paths.get("data/payLoad.json"));
@@ -120,41 +119,28 @@ public class BillingDocumentReversalApprovalVF11 {
 
 			Date date = new Date();
 
-		
-		 String payload1="{\r\n"
-		 		+ "    \"business_area\": \"MPS\",\r\n"
-		 		+ "    \"request_type\": \"01\",\r\n"
-		 		+ "    \"reversal_category\": \"00\",\r\n"
-		 		+ "    \"ritm_no_mps\": \"\",\r\n"
-		 		+ "    \"cnc_reason\": \"Retest adding MFG GEO to all business area\",\r\n"
-		 		+ "    \"corrective_action\": \"Retest adding MFG GEO to all business area\",\r\n"
-		 		+ "    \"Action\": \"SUBM\",\r\n"
-		 		+ "    \"to_Item\": [\r\n"
-		 		+ "        {\r\n"
-		 		+ "            \"item_no\": \"1\",\r\n"
-		 		+ "            \"vbeln_vf\": \""+input.getProperty("VF11BillingDocumentReversal.BillingDoc") +"\",\r\n"
-		 		+ "            \"vbeln_va\": \""+input.getProperty("VF11BillingDocumentReversal.SalesOrder") +"\",\r\n"
-		 		+ "            \"vbeln_vl\": \"\",\r\n"
-		 		+ "            \"vkorg\": \""+input.getProperty("VF11BillingDocumentReversal.CompanyCode") +"\",\r\n"
-		 		+ "            \"fkdat\": \"/Date(1660521600000)/\",\r\n"
-		 		+ "            \"kunag\": \"" +input.getProperty("VF11BillingDocumentReversal.SoldTo") +"\",\r\n"
-		 		+ "            \"name1\": \"Xerox Corporation\",\r\n"
-		 		+ "            \"cancellation_date\": null,\r\n"
-		 		+ "            \"intercmp_bill\": \"\",\r\n"
-		 		+ "            \"invoice_list\": \"\",\r\n"
-		 		+ "            \"faksk\": \"GN\",\r\n"
-		 		+ "            \"fksto\": false,\r\n"
-		 		+ "            \"netwr\": \"" +input.getProperty("VF11BillingDocumentReversal.Amount") +"\",\r\n"
-		 		+ "            \"waerk\": \"USD\",\r\n"
-		 		+ "            \"dmbe3\": \"76796.64\",\r\n"
-		 		+ "            \"hwae3\": \"USD\",\r\n"
-		 		+ "            \"error_id\": \"\",\r\n"
-		 		+ "            \"status\": \"Not Cancelled\",\r\n"
-		 		+ "            \"state\": \"Warning\"\r\n"
-		 		+ "        }\r\n"
-		 		+ "    ]\r\n"
-		 		+ "}";
-			
+			String payload1 = "{\r\n" + "    \"business_area\": \"MPS\",\r\n" + "    \"request_type\": \"01\",\r\n"
+					+ "    \"reversal_category\": \"00\",\r\n" + "    \"ritm_no_mps\": \"\",\r\n"
+					+ "    \"cnc_reason\": \"Retest adding MFG GEO to all business area\",\r\n"
+					+ "    \"corrective_action\": \"Retest adding MFG GEO to all business area\",\r\n"
+					+ "    \"Action\": \"SUBM\",\r\n" + "    \"to_Item\": [\r\n" + "        {\r\n"
+					+ "            \"item_no\": \"1\",\r\n" + "            \"vbeln_vf\": \""
+					+ input.getProperty("VF11BillingDocumentReversal.BillingDoc") + "\",\r\n"
+					+ "            \"vbeln_va\": \"" + input.getProperty("VF11BillingDocumentReversal.SalesOrder")
+					+ "\",\r\n" + "            \"vbeln_vl\": \"\",\r\n" + "            \"vkorg\": \""
+					+ input.getProperty("VF11BillingDocumentReversal.CompanyCode") + "\",\r\n"
+					+ "            \"fkdat\": \"/Date(1660521600000)/\",\r\n" + "            \"kunag\": \""
+					+ input.getProperty("VF11BillingDocumentReversal.SoldTo") + "\",\r\n"
+					+ "            \"name1\": \"Xerox Corporation\",\r\n"
+					+ "            \"cancellation_date\": null,\r\n" + "            \"intercmp_bill\": \"\",\r\n"
+					+ "            \"invoice_list\": \"\",\r\n" + "            \"faksk\": \"GN\",\r\n"
+					+ "            \"fksto\": false,\r\n" + "            \"netwr\": \""
+					+ input.getProperty("VF11BillingDocumentReversal.Amount") + "\",\r\n"
+					+ "            \"waerk\": \"USD\",\r\n" + "            \"dmbe3\": \"76796.64\",\r\n"
+					+ "            \"hwae3\": \"USD\",\r\n" + "            \"error_id\": \"\",\r\n"
+					+ "            \"status\": \"Not Cancelled\",\r\n" + "            \"state\": \"Warning\"\r\n"
+					+ "        }\r\n" + "    ]\r\n" + "}";
+
 //			
 //			 String payload1="\r\n"
 //			 		+ "{\r\n"
@@ -199,8 +185,7 @@ public class BillingDocumentReversalApprovalVF11 {
 							input.getProperty("VF11BillingDocumentReversalQA.RequestorPassword"))
 					.header("Accept", "application/json").header("Cookie", Cookies)
 					.header("Content-Type", "application/json").header("x-csrf-token", x_csrf_token3).body(payload1)
-					.when().post("/ZG_BILCNC_HEAD_CREATE").then()
-					.statusCode(201).statusLine("HTTP/1.1 201 Created")
+					.when().post("/ZG_BILCNC_HEAD_CREATE").then().statusCode(201).statusLine("HTTP/1.1 201 Created")
 					.extract().response();
 
 			BillingDocRevReqVF11 = response.jsonPath().get("d.request_no");
@@ -217,69 +202,62 @@ public class BillingDocumentReversalApprovalVF11 {
 
 	}
 
-	 
-	       @Test(dependsOnMethods = { "TS02CreateBillingDocumentReversalRequestVF11" })
-	  		public void TS03GetCsrfTokenWiIdAndCookieDataForApproverVF11() {
-			try {
-				Response response = RestAssured.given()
-						.baseUri("https://tsapmobile.lexmark.com/sap/opu/odata/sap/ZGF_BILCNC_APPROVE_SRV")
-						.relaxedHTTPSValidation().auth().preemptive()
-						.basic(input.getProperty("VF11BillingDocumentReversalQA.ApproverUser"),
-								input.getProperty("VF11BillingDocumentReversalQA.ApproverPassword"))
-						.header("Content-Type", "application/json").header("x-csrf-token", "Fetch")
-						.queryParam("$format", "json").when().get("/ZG_C_BILCNC_HEAD").then().statusCode(200)
-						.statusLine("HTTP/1.1 200 OK")
-						.log().all()
-						.extract().response();
+	@Test(dependsOnMethods = { "TS02CreateBillingDocumentReversalRequestVF11" })
+	public void TS03GetCsrfTokenWiIdAndCookieDataForApproverVF11() {
+		try {
+			Response response = RestAssured.given()
+					.baseUri("https://tsapmobile.lexmark.com/sap/opu/odata/sap/ZGF_BILCNC_APPROVE_SRV")
+					.relaxedHTTPSValidation().auth().preemptive()
+					.basic(input.getProperty("VF11BillingDocumentReversalQA.ApproverUser"),
+							input.getProperty("VF11BillingDocumentReversalQA.ApproverPassword"))
+					.header("Content-Type", "application/json").header("x-csrf-token", "Fetch")
+					.queryParam("$format", "json").when().get("/ZG_C_BILCNC_HEAD").then().statusCode(200)
+					.statusLine("HTTP/1.1 200 OK").log().all().extract().response();
 
-				x_csrf_token3 = response.getHeader("x-csrf-token");
+			x_csrf_token3 = response.getHeader("x-csrf-token");
 
-				Cookies = "SAP_SESSIONID_MGQ_750=" + response.getCookie("SAP_SESSIONID_MGQ_750") + ";sap-usercontext="
-						+ response.getCookie("sap-usercontext"); 
-			
+			Cookies = "SAP_SESSIONID_MGQ_750=" + response.getCookie("SAP_SESSIONID_MGQ_750") + ";sap-usercontext="
+					+ response.getCookie("sap-usercontext");
 
-				for (int i = 0; i < response.jsonPath().getList("d.results").size(); i++) {
-					String expectedDocRevReqVF11 = response.jsonPath().get("d.results[" + i + "].request_no");
+			for (int i = 0; i < response.jsonPath().getList("d.results").size(); i++) {
+				String expectedDocRevReqVF11 = response.jsonPath().get("d.results[" + i + "].request_no");
 
-					if (expectedDocRevReqVF11.equals(BillingDocRevReqVF11)) {
-						WiId = response.jsonPath().get("d.results[" + i + "].WiId");
-						break;
-					}
-
+				if (expectedDocRevReqVF11.equals(BillingDocRevReqVF11)) {
+					WiId = response.jsonPath().get("d.results[" + i + "].WiId");
+					break;
 				}
 
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-		}
 
-		@Test(dependsOnMethods = { "TS03GetCsrfTokenWiIdAndCookieDataForApproverVF11" })
-		public void TS04ApproveDocumentReversalRequestVF11() {
-			try {
-				writerOutput = new FileWriter("output/BillingDocumentReversalApprovalVF11.csv", false);
-				writer = new CSVWriter(writerOutput);
-
-			
-				Response response = RestAssured.given()
-						.baseUri("https://tsapmobile.lexmark.com/sap/opu/odata/sap/ZGF_BILCNC_APPROVE_SRV")
-						.relaxedHTTPSValidation().auth().preemptive()
-						.basic(input.getProperty("VF11BillingDocumentReversalQA.ApproverUser"),
-								input.getProperty("VF11BillingDocumentReversalQA.ApproverPassword"))
-						.header("Accept", "application/json").header("Cookie", Cookies)
-						.header("x-csrf-token", x_csrf_token3) 
-						.queryParam("request_no", "'" + BillingDocRevReqVF11 + "'").when()
-						.post("/ZG_C_BILCNC_HEADAction_approve").then().statusCode(200).statusLine("HTTP/1.1 200 OK")
-						.log().all()
-						.extract().response(); 
-			
-				outputData = new String[] { "Billing Document Reversal Approve - VF11", "Passed",
-						"Billing Document Reversal Request: " + BillingDocRevReqVF11 };
-				writer.writeNext(outputData, false);
-				writer.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
+
+	@Test(dependsOnMethods = { "TS03GetCsrfTokenWiIdAndCookieDataForApproverVF11" })
+	public void TS04ApproveDocumentReversalRequestVF11() {
+		try {
+			writerOutput = new FileWriter("output/BillingDocumentReversalApprovalVF11.csv", false);
+			writer = new CSVWriter(writerOutput);
+
+			Response response = RestAssured.given()
+					.baseUri("https://tsapmobile.lexmark.com/sap/opu/odata/sap/ZGF_BILCNC_APPROVE_SRV")
+					.relaxedHTTPSValidation().auth().preemptive()
+					.basic(input.getProperty("VF11BillingDocumentReversalQA.ApproverUser"),
+							input.getProperty("VF11BillingDocumentReversalQA.ApproverPassword"))
+					.header("Accept", "application/json").header("Cookie", Cookies)
+					.header("x-csrf-token", x_csrf_token3).queryParam("request_no", "'" + BillingDocRevReqVF11 + "'")
+					.when().post("/ZG_C_BILCNC_HEADAction_approve").then().statusCode(200).statusLine("HTTP/1.1 200 OK")
+					.log().all().extract().response();
+
+			outputData = new String[] { "Billing Document Reversal Approve - VF11", "Passed",
+					"Billing Document Reversal Request: " + BillingDocRevReqVF11 };
+			writer.writeNext(outputData, false);
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Test(dependsOnMethods = { "TS04ApproveDocumentReversalRequestVF11" })
 	public void TS05VerifyApprovalVF11() {
@@ -288,8 +266,7 @@ public class BillingDocumentReversalApprovalVF11 {
 
 			readerInput = new FileReader("data/InputData.properties");
 			input.load(readerInput);
-			
-				
+
 			writerOutput = new FileWriter("output/BillingDocumentReversalApprovalVF11.csv", false);
 			writer = new CSVWriter(writerOutput);
 
@@ -300,16 +277,13 @@ public class BillingDocumentReversalApprovalVF11 {
 							input.getProperty("VF11BillingDocumentReversalQA.RequestorPassword"))
 					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when()
 					.get("/ZG_BILCNC_HEAD_CREATE('" + BillingDocRevReqVF11 + "')/statusText").then().statusCode(200)
-					.statusLine("HTTP/1.1 200 OK")
-					.extract().response();
+					.statusLine("HTTP/1.1 200 OK").extract().response();
 
-			
-		
 			// Assert.assertTrue(response.jsonPath().get("d.statusText.Approved"));
 
 			outputData = new String[] { "Billing Document Reversal Approve - VF11", "Passed & Verified",
 					"Billing Document Reversal Request: " + BillingDocRevReqVF11 };
-			
+
 			writer.writeNext(outputData, false);
 			writer.close();
 
@@ -325,16 +299,16 @@ public class BillingDocumentReversalApprovalVF11 {
 
 			readerInput = new FileReader("data/InputData.properties");
 			input.load(readerInput);
-	
+
 			Response response = RestAssured.given()
 					.baseUri("https://tsapmobile.lexmark.com/sap/opu/odata/sap/ZG_C_BILCNC_TRC_HEAD_CDS")
 					.relaxedHTTPSValidation().auth().preemptive()
 					.basic(input.getProperty("VF11BillingDocumentReversalQA.WatcherUser"),
 							input.getProperty("VF11BillingDocumentReversalQA.WatcherPassword"))
-					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when().get("/ZG_C_BILCNC_TRC_HEAD('" + BillingDocRevReqVF11 + "')").then()
-					.statusCode(200).statusLine("HTTP/1.1 200 OK")
-					.extract().response();
-			
+					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when()
+					.get("/ZG_C_BILCNC_TRC_HEAD('" + BillingDocRevReqVF11 + "')").then().statusCode(200)
+					.statusLine("HTTP/1.1 200 OK").extract().response();
+
 			// Assert.assertTrue(response.jsonPath().get("d.ddtext.Approved"));
 		} catch (Exception e) {
 			e.printStackTrace();
