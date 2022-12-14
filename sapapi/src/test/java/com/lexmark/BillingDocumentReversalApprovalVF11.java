@@ -96,12 +96,8 @@ public class BillingDocumentReversalApprovalVF11 {
 
 			x_csrf_token3 = response.getHeader("x-csrf-token");
 
-			System.out.println(" Token " + x_csrf_token3);
-
 			Cookies = "SAP_SESSIONID_MGQ_750=" + response.getCookie("SAP_SESSIONID_MGQ_750") + ";sap-usercontext="
 					+ response.getCookie("sap-usercontext");
-
-			System.out.println(" Cookies " + Cookies);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,7 +125,7 @@ public class BillingDocumentReversalApprovalVF11 {
 					+ "            \"vbeln_va\": \"" + input.getProperty("VF11BillingDocumentReversal.SalesOrder")
 					+ "\",\r\n" + "            \"vbeln_vl\": \"\",\r\n" + "            \"vkorg\": \""
 					+ input.getProperty("VF11BillingDocumentReversal.CompanyCode") + "\",\r\n"
-					+ "            \"fkdat\": \"/Date(1660521600000)/\",\r\n" + "            \"kunag\": \""
+					+ "            \"fkdat\": \"/Date(1660867200000)/\",\r\n" + "            \"kunag\": \""
 					+ input.getProperty("VF11BillingDocumentReversal.SoldTo") + "\",\r\n"
 					+ "            \"name1\": \"Xerox Corporation\",\r\n"
 					+ "            \"cancellation_date\": null,\r\n" + "            \"intercmp_bill\": \"\",\r\n"
@@ -212,7 +208,7 @@ public class BillingDocumentReversalApprovalVF11 {
 							input.getProperty("VF11BillingDocumentReversalQA.ApproverPassword"))
 					.header("Content-Type", "application/json").header("x-csrf-token", "Fetch")
 					.queryParam("$format", "json").when().get("/ZG_C_BILCNC_HEAD").then().statusCode(200)
-					.statusLine("HTTP/1.1 200 OK").log().all().extract().response();
+					.statusLine("HTTP/1.1 200 OK").extract().response();
 
 			x_csrf_token3 = response.getHeader("x-csrf-token");
 
@@ -237,6 +233,7 @@ public class BillingDocumentReversalApprovalVF11 {
 	@Test(dependsOnMethods = { "TS03GetCsrfTokenWiIdAndCookieDataForApproverVF11" })
 	public void TS04ApproveDocumentReversalRequestVF11() {
 		try {
+
 			writerOutput = new FileWriter("output/BillingDocumentReversalApprovalVF11.csv", false);
 			writer = new CSVWriter(writerOutput);
 
@@ -248,7 +245,7 @@ public class BillingDocumentReversalApprovalVF11 {
 					.header("Accept", "application/json").header("Cookie", Cookies)
 					.header("x-csrf-token", x_csrf_token3).queryParam("request_no", "'" + BillingDocRevReqVF11 + "'")
 					.when().post("/ZG_C_BILCNC_HEADAction_approve").then().statusCode(200).statusLine("HTTP/1.1 200 OK")
-					.log().all().extract().response();
+					.extract().response();
 
 			outputData = new String[] { "Billing Document Reversal Approve - VF11", "Passed",
 					"Billing Document Reversal Request: " + BillingDocRevReqVF11 };
@@ -263,10 +260,6 @@ public class BillingDocumentReversalApprovalVF11 {
 	public void TS05VerifyApprovalVF11() {
 
 		try {
-
-			readerInput = new FileReader("data/InputData.properties");
-			input.load(readerInput);
-
 			writerOutput = new FileWriter("output/BillingDocumentReversalApprovalVF11.csv", false);
 			writer = new CSVWriter(writerOutput);
 
@@ -278,12 +271,14 @@ public class BillingDocumentReversalApprovalVF11 {
 					.header("x-csrf-token", "Fetch").queryParam("$format", "json").when()
 					.get("/ZG_BILCNC_HEAD_CREATE('" + BillingDocRevReqVF11 + "')/statusText").then().statusCode(200)
 					.statusLine("HTTP/1.1 200 OK").extract().response();
-
 			// Assert.assertTrue(response.jsonPath().get("d.statusText.Approved"));
 
-			outputData = new String[] { "Billing Document Reversal Approve - VF11", "Passed & Verified",
-					"Billing Document Reversal Request: " + BillingDocRevReqVF11 };
+			String approval = response.jsonPath().get("d.statusText");
+			if (approval.equalsIgnoreCase("Approved") || approval.equalsIgnoreCase("Closed")) {
 
+				outputData = new String[] { "Billing Document Reversal Approve - VF11", "Passed & Verified",
+						"Billing Document Reversal Request: " + BillingDocRevReqVF11 };
+			}
 			writer.writeNext(outputData, false);
 			writer.close();
 
@@ -292,7 +287,7 @@ public class BillingDocumentReversalApprovalVF11 {
 		}
 	}
 
-	@Test(dependsOnMethods = { "TS05VerifyApprovalVF11" })
+	@Test(dependsOnMethods = { "TS04ApproveDocumentReversalRequestVF11" })
 	public void TS06WatcherVF11() {
 
 		try {
@@ -300,6 +295,8 @@ public class BillingDocumentReversalApprovalVF11 {
 			readerInput = new FileReader("data/InputData.properties");
 			input.load(readerInput);
 
+			writerOutput = new FileWriter("output/BillingDocumentReversalApprovalVF11.csv", false);
+			writer = new CSVWriter(writerOutput);
 			Response response = RestAssured.given()
 					.baseUri("https://tsapmobile.lexmark.com/sap/opu/odata/sap/ZG_C_BILCNC_TRC_HEAD_CDS")
 					.relaxedHTTPSValidation().auth().preemptive()
@@ -309,7 +306,16 @@ public class BillingDocumentReversalApprovalVF11 {
 					.get("/ZG_C_BILCNC_TRC_HEAD('" + BillingDocRevReqVF11 + "')").then().statusCode(200)
 					.statusLine("HTTP/1.1 200 OK").extract().response();
 
-			// Assert.assertTrue(response.jsonPath().get("d.ddtext.Approved"));
+			String value = response.jsonPath().get("d.ddtext");
+
+			if (value.equalsIgnoreCase("Approved") || value.equalsIgnoreCase("Closed")) {
+				// Assert.assertTrue(response.jsonPath().get("d.ddtext.Closed"));
+
+				outputData = new String[] { "Billing Document Reversal Approve - VF11", "Passed & Verified1",
+						"Billing Document Reversal Request: " + BillingDocRevReqVF11 };
+			}
+			writer.writeNext(outputData, false);
+			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 
