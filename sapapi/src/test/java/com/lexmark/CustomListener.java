@@ -15,7 +15,7 @@ public class CustomListener implements IClassListener {
 	private int m_count = 0;
 
 	public void onBeforeClass(ITestClass testClass) {
-		start = System.currentTimeMillis(); 
+		start = System.currentTimeMillis();
 	}
 
 	public void onAfterClass(ITestClass testClass) {
