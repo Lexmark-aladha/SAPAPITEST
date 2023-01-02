@@ -25,10 +25,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+@SuppressWarnings({ "deprecation" })
 public class Utility {
 
 	public static void writeXLSXFile(String Quote, String fileName, int numberOfCellsToBeUpdated) throws IOException {
@@ -155,5 +159,16 @@ public class Utility {
 			}
 		}
 		return a[total - 1];
+	}
+	
+	public static boolean waitForPageLoad(WebDriver driver, int timeoutInSeconds) {
+		ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+			}
+		};
+		WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+		boolean flag = wait.until(pageLoadCondition);
+		return flag;
 	}
 }
