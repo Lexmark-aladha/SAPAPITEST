@@ -55,7 +55,7 @@ public class GLAccountBalancesECX1 {
 					.queryParam("$top", "99")
 				    //.queryParam("$filter", "Ledger eq '0L' and CompanyCode eq '5050' and LedgerFiscalYear eq '2022'&")
 					//.when().get("/GL_ACCOUNT_BALANCESet?$select=LedgerFiscalYear, LedgerFiscalPeriod,IsNotPostedTo, CreditAmountInCoCodeCrcy, DebitAmountInCompanyCodeCrcy, BalAmtInCompanyCodeCrcy, AccmltdBalAmtInCoCodeCrcy, CompanyCodeCurrency&$filter=Ledger eq '" +ledger+"' and CompanyCode eq '"+companyCode+"' and LedgerFiscalYear eq '"+ledgerFiscalYear+"'&")
-					.when().get("/GL_ACCOUNT_BALANCESet?$select=LedgerFiscalYear, LedgerFiscalPeriod,IsNotPostedTo, CreditAmountInCoCodeCrcy, DebitAmountInCompanyCodeCrcy, BalAmtInCompanyCodeCrcy, AccmltdBalAmtInCoCodeCrcy, CompanyCodeCurrency&$filter=Ledger eq '0L' and CompanyCode eq '5050' and LedgerFiscalYear eq '2022'&$top=99&$format=json")
+					.when().get("/GL_ACCOUNT_BALANCESet?$select=LedgerFiscalYear, LedgerFiscalPeriod,IsNotPostedTo, CreditAmountInCoCodeCrcy, DebitAmountInCompanyCodeCrcy, BalAmtInCompanyCodeCrcy, AccmltdBalAmtInCoCodeCrcy, CompanyCodeCurrency&$filter=Ledger eq '"+ledger+"' and CompanyCode eq '"+companyCode+"' and LedgerFiscalYear eq '2022'&$top=99&$format=json")
 					.then().statusCode(200).statusLine("HTTP/1.1 200 OK")
 					.log().all()
 					.extract().response();
